@@ -51,7 +51,6 @@ def hangman():
             guess=input("Enter the letter: ")
             valid_entry.remove(guess)
             letter_used.append(guess)
-# jkdcd
         if guess not in word:
             turns = turns-1
             if turns==9:
@@ -140,4 +139,3 @@ while choice=='y':
   print('')
   hangman()
   choice=input("Do you wish to play again (y/n) : ")
-  #file handling
