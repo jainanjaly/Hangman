@@ -131,7 +131,6 @@ def hangman():
 choice='y'              
 while choice=='y':
   print("WELCOME TO HANGMAN!")
-  #game
   name = input("Enter your Name : ")
   print('')
   print("----------------------------")
