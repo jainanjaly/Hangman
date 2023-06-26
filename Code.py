@@ -19,6 +19,10 @@ def hangman():
     guessmade=""
     letter_used=list()
     valid_entry=set('abcdefghijklmnopqrstuvwxyz')
+    def update():
+        if guess in valid_entry:
+            valid_entry.remove(guess)
+            letter_used.append(guess)
 
     while len(word)>0:
         main_word=''
@@ -39,18 +43,18 @@ def hangman():
         print('')
         print('Letters used are : ',letter_used)
         print("Guess the word ",main_word)
-        guess=input("Enter the letter: ")
-        
-        if guess in valid_entry:
-            guessmade=guessmade+guess
-            valid_entry.remove(guess)
-            letter_used.append(guess)
-        else:
-            print('')
-            print("Enter a valid character")
-            guess=input("Enter the letter: ")
-            valid_entry.remove(guess)
-            letter_used.append(guess)
+        guess=input("Enter the letter: ")     
+
+        while True:
+            if guess in valid_entry:
+                guessmade=guessmade+guess
+                update()
+                break
+            else:
+                print('')
+                print("Enter a valid character")
+                guess=input("Enter the letter: ")
+
         if guess not in word:
             turns = turns-1
             if turns==9:
