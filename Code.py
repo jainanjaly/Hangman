@@ -1,5 +1,90 @@
 import random
 import csv
+
+def display_hangman(tries):
+    stages = [  # final state: head, torso, both arms, and both legs
+                """
+                   --------
+                   |      |
+                   |      O
+                   |     \\|/
+                   |      |
+                   |     / \\
+                   -
+                """,
+                # head, torso, both arms, and one leg
+                """
+                   --------
+                   |      |
+                   |      O
+                   |     \\|/
+                   |      |
+                   |     / 
+                   -
+                """,
+                # head, torso, and both arms
+                """
+                   --------
+                   |      |
+                   |      O
+                   |     \\|/
+                   |      |
+                   |      
+                   -
+                """,
+                # head, torso, and one arm
+                """
+                   --------
+                   |      |
+                   |      O
+                   |     \\|
+                   |      |
+                   |     
+                   -
+                """,
+                # head and torso
+                """
+                   --------
+                   |      |
+                   |      O
+                   |      |
+                   |      |
+                   |     
+                   -
+                """,
+                # head
+                """
+                   --------
+                   |      |
+                   |      O
+                   |    
+                   |      
+                   |     
+                   -
+                """,
+                # initial empty state
+                """
+                   --------
+                   |      |
+                   |      
+                   |    
+                   |      
+                   |     
+                   -
+                """,
+                  # initial empty state
+                """
+                   --------
+                   |      
+                   |      
+                   |    
+                   |      
+                   |     
+                   -
+                """
+    ]
+    return stages[tries]
+
 def hangman():
     print("Choose an option to select the genre of words")
     print("1.Sports \n2.Food \n3.Places")
@@ -15,7 +100,7 @@ def hangman():
     else:
         print("Enter a valid data :")
 
-    turns=10
+    tries=7
     guessmade=""
     letter_used=list()
     valid_entry=set('abcdefghijklmnopqrstuvwxyz')
@@ -24,14 +109,14 @@ def hangman():
             valid_entry.remove(guess)
             letter_used.append(guess)
 
-    while len(word)>0:
+    while len(word)>0 and tries>0:
         main_word=''
         
         for letter in word:
             if letter in guessmade:
                 main_word=main_word+letter
             else:
-                main_word=main_word+'_ '
+                main_word=main_word+'_ '   
 
         if main_word == word:
             print('')
@@ -41,10 +126,12 @@ def hangman():
             print("---------------------")
             break
         print('')
+        print(display_hangman(tries))
         print('Letters used are : ',letter_used)
         print("Guess the word ",main_word)
-        guess=input("Enter the letter: ")     
-
+        guess=input("Enter the letter: ") 
+        if guess not in word:
+            tries -= 1 
         while True:
             if guess in valid_entry:
                 guessmade=guessmade+guess
@@ -54,83 +141,11 @@ def hangman():
                 print('')
                 print("Enter a valid character")
                 guess=input("Enter the letter: ")
-
-        if guess not in word:
-            turns = turns-1
-            if turns==9:
-                print("")
-                print("9 TURNS LEFT!")
-                print("HANGMAN:")
-                print('---------')
-            if turns==8:
-                print("")
-                print("8 TURNS LEFT!")
-                print("HANGMAN:")
-                print('---------')
-                print("    O    ")
-            if turns==7:
-                print("")
-                print("7 TURNS LEFT!")
-                print("HANGMAN:")
-                print('---------')
-                print("    O    ")
-                print('    |    ')
-            if turns==6:
-                print("")
-                print("6 TURNS LEFT!")
-                print("HANGMAN:")
-                print('---------')
-                print("    O    ")
-                print('    |    ')
-                print('   /     ')
-            if turns==5:
-                print("")
-                print("5 TURNS LEFT!")
-                print("HANGMAN:")
-                print('---------')
-                print("    O    ")
-                print('    |    ')
-                print('   / \   ')
-            if turns==4:
-                print("")
-                print("4 TURNS LEFT!")
-                print("HANGMAN:")
-                print('---------')
-                print("    O    ")
-                print('    |    ')
-                print('   / \   ')
-            if turns==3:
-                print("3 TURNS LEFT!")
-                print("HANGMAN:")
-                print('---------')
-                print("  \ O    ")
-                print('    |    ')
-                print('   / \   ')
-            if turns==2:
-                print("")
-                print("2 TURNS LEFT!")
-                print("HANGMAN:")
-                print('---------')
-                print("  \ O /   ")
-                print('    |    ')
-                print('   / \   ')
-            if turns==1:
-                print("")
-                print("1 TURN LEFT , SAVE AN INNOCENT MAN FROM HANGING!")
-                print("HANGMAN:")
-                print('---------')
-                print("  \ O /__|   ")
-                print('    |    ')
-                print('   / \   ')
-            if turns==0:
-                print("")
-                print("----------------------------")
-                print("You lose :(")
-                print("Better luck next time!")
-                print('The word was',word.upper())
-                print("----------------------------")
-                print("")
-                break
+        if tries==1:
+            print('\nONLY 1 CHANCE LEFT\nSAVE AN INNOCENT MAN FROM DYING!!!\n')
+        elif tries==0:
+            print(display_hangman(0))
+            print('\nYOU LOSE ',name,'\nBETTER LUCK NEXT TIME :(')
 choice='y'              
 while choice=='y':
   print("WELCOME TO HANGMAN!")
@@ -138,8 +153,8 @@ while choice=='y':
   print('')
   print("----------------------------")
   print("Welcome to Hangman",name,"!")
-  print("Try to guess the word in less than 10 attempts")
+  print("Try to guess the word in less than 7 attempts")
   print("----------------------------")
   print('')
   hangman()
-  choice=input("Do you wish to play again (y/n) : ")
+  choice=input("\nDo you wish to play again (y/n) : ")
